@@ -16,3 +16,32 @@ DOI: https://doi.org/10.1016/j.fuel.2026.139918
 > A K-stabilized mixed-phase Fe3O4/Fe5C2 structure resists sintering, oxidation, and carbon-induced deactivation, preserving activity.
 > γ-Al2O3 disperses excess potassium and preserves catalyst porosity even at ultra-high loadings, preventing active-site blockage.
 > Long-term runs show 15.6% C5+ yield with methane cut to 12%, setting a new design paradigm for industrial CO2-to-fuel catalysts.
+
+## Interactive Streamlit app (`streamlita_app.py`)
+
+An interactive web app that deploys the trained XGBoost surrogate models and the
+Bayesian-optimization catalyst search. Change **Temperature**, **Pressure** and
+**GHSV**, and the app recommends the **optimal catalyst** (Fe–K–Al + two
+selectable promoters) for those conditions, predicting CO₂ conversion, C5+
+selectivity and C5+ yield.
+
+**Run locally**
+```bash
+pip install -r requirements.txt
+python XGBoost.py            # trains models → *_model.pkl
+streamlit run streamlita_app.py
+```
+
+**Deploy on Streamlit Cloud**
+1. Commit `streamlita_app.py`, `requirements.txt`, and the trained
+   `CO2_conv_model.pkl`, `C5plus_sel_model.pkl`, `C5plus_yield_model.pkl`
+   files (the app searches the repo root, `models/`, and
+   `outputs/xgboost_v3/models/`).
+2. On [share.streamlit.io](https://share.streamlit.io), point the app file to
+   `streamlita_app.py`.
+
+**Features**
+- 🎯 *Optimal catalyst* — recommends the best composition for the chosen
+  conditions via a fast vectorised random search over the surrogate models.
+- 🧪 *Manual prediction* — predict performance for a specific catalyst.
+- 📈 *Condition sweep* — see how the optimum shifts as one of T / P / GHSV varies.
